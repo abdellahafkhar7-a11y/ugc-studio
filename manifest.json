@@ -1,0 +1,26 @@
+{
+  "name": "UGC Studio 3",
+  "short_name": "UGC Studio 3",
+  "description": "UGC Studio 3 — portfolio and creative media showcase.",
+  "start_url": "/",
+  "display": "standalone",
+  "theme_color": "#000000",
+  "background_color": "#000000",
+  "icons": [
+    {
+      "src": "/assets/images/favicon.png",
+      "sizes": "32x32",
+      "type": "image/png"
+    },
+    {
+      "src": "/assets/images/apple-touch-icon.png",
+      "sizes": "180x180",
+      "type": "image/png"
+    },
+    {
+      "src": "/assets/images/logo.png",
+      "sizes": "210x210",
+      "type": "image/png"
+    }
+  ]
+}

@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://photographypixell.com/sitemap.xml
+Sitemap: https://ugc-studio-3.vercel.app/sitemap.xml

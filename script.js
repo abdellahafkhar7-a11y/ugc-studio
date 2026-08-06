@@ -14,11 +14,6 @@ const mediaOpeners = document.querySelectorAll('[data-lightbox-src]');
 const imageModal = document.querySelector('#image-modal');
 const modalImage = imageModal ? imageModal.querySelector('img') : null;
 const modalClose = imageModal ? imageModal.querySelector('.modal-close') : null;
-const navToggle = document.querySelector('#nav-toggle');
-const navMenu = document.querySelector('#nav-menu');
-const navLinks = document.querySelectorAll('.nav-link');
-const bottomNavItems = document.querySelectorAll('.bottom-nav-item');
-const menuBtn = document.querySelector('#menu-btn');
 const menuPanel = document.querySelector('#menu-panel');
 const menuClose = document.querySelector('#menu-close');
 const menuItems = document.querySelectorAll('.menu-item');
@@ -40,7 +35,15 @@ function debounce(func, wait) {
 }
 
 function pauseAllVideos() {
-  document.querySelectorAll('video').forEach(video => video.pause());
+  document.querySelectorAll('video').forEach(video => {
+    if (!video.paused) video.pause();
+    var card = video.closest('.reel-card');
+    if (card) {
+      card.classList.remove('is-playing');
+      card.classList.add('is-paused');
+      updatePlayIcon(card, false);
+    }
+  });
 }
 
 // Attach loading-state event handlers to a reel card's video element
@@ -51,11 +54,12 @@ function initVideoLoadingHandlers(card, video) {
   video.addEventListener('loadedmetadata', () => card.classList.remove('loading'));
   video.addEventListener('loadeddata', () => card.classList.remove('loading'));
   video.addEventListener('canplay', () => card.classList.remove('loading'));
+  video.addEventListener('canplaythrough', () => card.classList.remove('loading'));
   video.addEventListener('waiting', () => card.classList.add('loading'));
   video.addEventListener('playing', () => card.classList.remove('loading'));
 
-  // Fallback: remove loading state after 5s (iOS)
-  setTimeout(() => card.classList.remove('loading'), 5000);
+  // Fallback: remove loading state after 8s (generous for slow networks)
+  setTimeout(() => card.classList.remove('loading'), 8000);
 }
 
 // Disable context menu on all videos (download protection)
@@ -125,18 +129,18 @@ function buildPageMeta() {
     crumb: sp.home ? sp.home.crumb : 'Home'
   };
   meta['home-portfolio'] = {
-    title: (sp['home-portfolio'] && sp['home-portfolio'].seoTitle) || 'Portfolio | Photography Pixel',
+    title: (sp['home-portfolio'] && sp['home-portfolio'].seoTitle) || 'Portfolio | UGC Studio 3',
     desc: (sp['home-portfolio'] && sp['home-portfolio'].seoDescription) || 'استعرض أحدث أعمالنا الإبداعية: فيديوهات UGC، تصوير، محلات تجارية، أعراس وخدمات احترافية في أيت ملول - أكادير.',
     crumb: (sp['home-portfolio'] && sp['home-portfolio'].crumb) || 'Portfolio'
   };
   meta['home-contact'] = {
-    title: (sp['home-contact'] && sp['home-contact'].seoTitle) || 'Contact | Photography Pixel',
-    desc: (sp['home-contact'] && sp['home-contact'].seoDescription) || 'تواصل مع وكالة Photography Pixel لخدمات التصوير والتسويق الرقمي في أيت ملول - أكادير. واتساب، إنستغرام، بريد إلكتروني.',
+    title: (sp['home-contact'] && sp['home-contact'].seoTitle) || 'Contact | UGC Studio 3',
+    desc: (sp['home-contact'] && sp['home-contact'].seoDescription) || 'تواصل مع وكالة UGC Studio 3 لخدمات التصوير والتسويق الرقمي في أيت ملول - أكادير. واتساب، إنستغرام، بريد إلكتروني.',
     crumb: (sp['home-contact'] && sp['home-contact'].crumb) || 'Contact'
   };
   meta['equipment'] = {
-    title: (sp.equipment && sp.equipment.seoTitle) || 'Equipment | Photography Pixel',
-    desc: (sp.equipment && sp.equipment.seoDescription) || 'تعرف على معدات الاستوديو الاحترافية المستخدمة في وكالة Photography Pixel.',
+    title: (sp.equipment && sp.equipment.seoTitle) || 'Equipment | UGC Studio 3',
+    desc: (sp.equipment && sp.equipment.seoDescription) || 'تعرف على معدات الاستوديو الاحترافية المستخدمة في وكالة UGC Studio 3.',
     crumb: (sp.equipment && sp.equipment.crumb) || 'Equipment'
   };
 
@@ -144,7 +148,7 @@ function buildPageMeta() {
   CATEGORIES.forEach(cat => {
     const pageKey = 'cat-' + cat.slug;
     meta[pageKey] = {
-      title: getConfig(cat.slug, 'seoTitle', cat.label + ' | Photography Pixel'),
+      title: getConfig(cat.slug, 'seoTitle', cat.label + ' | UGC Studio 3'),
       desc: getConfig(cat.slug, 'seoDescription', ''),
       crumb: getConfig(cat.slug, 'label', cat.label)
     };
@@ -153,7 +157,7 @@ function buildPageMeta() {
   // Expanded nav items (models, media-buyer, voiceover)
   EXPANDED_NAV_ITEMS.forEach(item => {
     meta[item.nav] = {
-      title: getConfig(item.nav, 'seoTitle', item.label + ' | Photography Pixel'),
+      title: getConfig(item.nav, 'seoTitle', item.label + ' | UGC Studio 3'),
       desc: getConfig(item.nav, 'seoDescription', ''),
       crumb: getConfig(item.nav, 'label', item.label)
     };
@@ -223,30 +227,340 @@ async function fetchCategoryUrls(txtFile) {
 }
 
 function createReelCard(url) {
-  const card = document.createElement('article');
-  card.className = 'reel-card';
+  var card = document.createElement('article');
+  card.className = 'reel-card is-paused';
+  card.setAttribute('data-url', url);
   card.innerHTML =
-    '<video controls controlsList="nodownload noplaybackrate" disablePictureInPicture playsinline webkit-playsinline preload="metadata" oncontextmenu="return false">' +
-      '<source data-src="' + url + '" type="video/mp4">' +
-    '</video>';
+    '<div class="reel-media">' +
+      '<video data-video-src="' + url + '" muted loop playsinline webkit-playsinline preload="none" disablePictureInPicture controlsList="nodownload noplaybackrate" oncontextmenu="return false">' +
+      '</video>' +
+      '<div class="reel-error" hidden>' +
+        '<svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>' +
+        '<span>Unable to load video</span>' +
+      '</div>' +
+    '</div>' +
+    '<button class="reel-center-play" type="button" aria-label="Play">' +
+      '<svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>' +
+    '</button>' +
+    '<div class="reel-controls">' +
+      '<div class="reel-progress" role="slider" aria-label="Seek" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" tabindex="0">' +
+        '<div class="reel-progress-buffer"></div>' +
+        '<div class="reel-progress-fill"></div>' +
+      '</div>' +
+      '<div class="reel-ctrl-row">' +
+        '<button class="reel-btn reel-play" type="button" aria-label="Play">' +
+          '<svg class="ic-play" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>' +
+          '<svg class="ic-pause" viewBox="0 0 24 24" fill="currentColor"><path d="M6 4h4v16H6zM14 4h4v16h-4z"/></svg>' +
+        '</button>' +
+        '<button class="reel-btn reel-mute" type="button" aria-label="Unmute">' +
+          '<svg class="ic-vol-on" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" fill="currentColor"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg>' +
+          '<svg class="ic-vol-off" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" fill="currentColor"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg>' +
+        '</button>' +
+        '<span class="reel-time"><span class="reel-cur">0:00</span><span class="reel-sep">/</span><span class="reel-dur">0:00</span></span>' +
+        '<button class="reel-btn reel-fs" type="button" aria-label="Enter fullscreen">' +
+          '<svg class="ic-fs-enter" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9V4h5"/><path d="M20 9V4h-5"/><path d="M4 15v5h5"/><path d="M20 15v5h-5"/></svg>' +
+          '<svg class="ic-fs-exit" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 4v5H4"/><path d="M15 4v5h5"/><path d="M9 20v-5H4"/><path d="M15 20v-5h5"/></svg>' +
+        '</button>' +
+      '</div>' +
+    '</div>';
   return card;
 }
 
 // Lazy-load video sources via IntersectionObserver
+// Sets video.src directly (no <source> child) then calls load()
 const lazyVideoObserver = new IntersectionObserver((entries) => {
   entries.forEach(entry => {
     if (entry.isIntersecting) {
-      const source = entry.target.querySelector('source');
-      if (source && source.dataset.src) {
-        const video = entry.target.querySelector('video');
-        source.src = source.dataset.src;
-        source.removeAttribute('data-src');
-        if (video) video.load();
+      var card = entry.target;
+      var video = card.querySelector('video');
+      if (!video) return;
+      var url = video.getAttribute('data-video-src');
+      if (url) {
+        video.removeAttribute('data-video-src');
+        video.src = url;
+        video.load();
+        console.log('[Reel] Source assigned:', url);
       }
-      lazyVideoObserver.unobserve(entry.target);
+      lazyVideoObserver.unobserve(card);
     }
   });
-}, { rootMargin: '300px 0px', threshold: 0.01 });
+}, { rootMargin: '400px 0px', threshold: 0.01 });
+
+// ============================================
+// CUSTOM VIDEO PLAYER
+// Single-active playback · mute persistence · controls auto-hide
+// ============================================
+const MUTE_KEY = 'ugc3-muted';
+let prefersMuted = true;
+try { prefersMuted = localStorage.getItem(MUTE_KEY) !== 'false'; } catch (e) {}
+
+function formatTime(sec) {
+  if (!sec || isNaN(sec) || !isFinite(sec)) return '0:00';
+  var m = Math.floor(sec / 60);
+  var s = Math.floor(sec % 60);
+  return m + ':' + (s < 10 ? '0' : '') + s;
+}
+
+function pauseOtherReels(activeVideo) {
+  document.querySelectorAll('.reel-card video').forEach(function(v) {
+    if (v !== activeVideo && !v.paused) {
+      v.pause();
+      var card = v.closest('.reel-card');
+      if (card) {
+        card.classList.remove('is-playing');
+        card.classList.add('is-paused');
+        updatePlayIcon(card, false);
+      }
+    }
+  });
+}
+
+function updatePlayIcon(card, playing) {
+  var btn = card.querySelector('.reel-play');
+  var center = card.querySelector('.reel-center-play');
+  if (playing) {
+    card.classList.add('is-playing');
+    card.classList.remove('is-paused');
+    if (btn) btn.setAttribute('aria-label', 'Pause');
+    if (center) center.setAttribute('aria-hidden', 'true');
+  } else {
+    card.classList.remove('is-playing');
+    card.classList.add('is-paused');
+    if (btn) btn.setAttribute('aria-label', 'Play');
+    if (center) center.setAttribute('aria-hidden', 'false');
+  }
+}
+
+function updateMuteIcon(card, muted) {
+  var btn = card.querySelector('.reel-mute');
+  if (!btn) return;
+  if (muted) {
+    btn.setAttribute('aria-label', 'Unmute');
+    btn.classList.add('is-muted');
+  } else {
+    btn.setAttribute('aria-label', 'Mute');
+    btn.classList.remove('is-muted');
+  }
+}
+
+function updateProgress(card, video) {
+  var fill = card.querySelector('.reel-progress-fill');
+  var buffer = card.querySelector('.reel-progress-buffer');
+  var cur = card.querySelector('.reel-cur');
+  var dur = card.querySelector('.reel-dur');
+  var slider = card.querySelector('.reel-progress');
+  var pct = 0, bufPct = 0;
+  if (video.duration && isFinite(video.duration)) {
+    pct = (video.currentTime / video.duration) * 100;
+    if (video.buffered.length > 0) {
+      bufPct = (video.buffered.end(video.buffered.length - 1) / video.duration) * 100;
+    }
+  }
+  if (fill) fill.style.width = pct + '%';
+  if (buffer) buffer.style.width = bufPct + '%';
+  if (cur) cur.textContent = formatTime(video.currentTime);
+  if (dur) dur.textContent = formatTime(video.duration);
+  if (slider) slider.setAttribute('aria-valuenow', Math.round(pct));
+}
+
+function showControls(card) {
+  card.classList.add('show-controls');
+  clearTimeout(card._hideTimer);
+}
+
+function scheduleHideControls(card, video) {
+  clearTimeout(card._hideTimer);
+  if (video && !video.paused) {
+    card._hideTimer = setTimeout(function() {
+      card.classList.remove('show-controls');
+    }, 2800);
+  }
+}
+
+function seekToRatio(video, ratio) {
+  if (!video.duration || !isFinite(video.duration)) return;
+  ratio = Math.max(0, Math.min(1, ratio));
+  video.currentTime = ratio * video.duration;
+}
+
+function toggleFullscreen(card, video) {
+  var el = card.querySelector('.reel-media') || card;
+  if (document.fullscreenElement) {
+    if (document.exitFullscreen) document.exitFullscreen();
+  } else if (el.requestFullscreen) {
+    el.requestFullscreen().catch(function() {});
+  } else if (el.webkitRequestFullscreen) {
+    el.webkitRequestFullscreen();
+  } else if (video.webkitEnterFullscreen) {
+    video.webkitEnterFullscreen();
+  }
+}
+
+function initCustomPlayer(card, video) {
+  var url = card.getAttribute('data-url') || '';
+
+  // Apply remembered mute preference
+  video.muted = prefersMuted;
+  updateMuteIcon(card, video.muted);
+
+  // Loading skeleton handlers
+  video.addEventListener('loadstart', function() {
+    card.classList.add('loading');
+    console.log('[Reel] loadstart:', url);
+  });
+  video.addEventListener('loadedmetadata', function() {
+    card.classList.remove('loading');
+    updateProgress(card, video);
+    console.log('[Reel] loadedmetadata:', url, 'duration:', video.duration);
+  });
+  video.addEventListener('loadeddata', function() {
+    card.classList.remove('loading');
+    console.log('[Reel] loadeddata:', url);
+  });
+  video.addEventListener('canplay', function() {
+    card.classList.remove('loading');
+    console.log('[Reel] canplay:', url);
+  });
+  video.addEventListener('canplaythrough', function() {
+    console.log('[Reel] canplaythrough:', url);
+  });
+  video.addEventListener('waiting', function() { card.classList.add('loading'); });
+  video.addEventListener('playing', function() {
+    card.classList.remove('loading');
+    console.log('[Reel] playing:', url);
+  });
+  video.addEventListener('play', function() { console.log('[Reel] play event:', url); });
+  video.addEventListener('timeupdate', function() { updateProgress(card, video); });
+  video.addEventListener('progress', function() { updateProgress(card, video); });
+  video.addEventListener('ended', function() { updatePlayIcon(card, false); });
+
+  // Error handling — only fire when video.error is non-null AND src is set
+  video.addEventListener('error', function() {
+    var err = video.error;
+    console.error('[Reel] error:', url, 'code:', err && err.code, 'networkState:', video.networkState, 'readyState:', video.readyState);
+    // Ignore spurious errors when no source has been assigned yet
+    if (!err) return;
+    if (!video.src || video.src === '') return;
+    card.classList.remove('loading');
+    card.classList.add('is-error');
+    var errEl = card.querySelector('.reel-error');
+    if (errEl) errEl.hidden = false;
+    var ctrls = card.querySelector('.reel-controls');
+    if (ctrls) ctrls.style.display = 'none';
+    var cp = card.querySelector('.reel-center-play');
+    if (cp) cp.style.display = 'none';
+  });
+
+  // Play / pause
+  video.addEventListener('play', function() {
+    pauseOtherReels(video);
+    updatePlayIcon(card, true);
+    scheduleHideControls(card, video);
+  });
+  video.addEventListener('pause', function() {
+    updatePlayIcon(card, false);
+    showControls(card);
+  });
+
+  // Center play / card click
+  var centerBtn = card.querySelector('.reel-center-play');
+  if (centerBtn) {
+    centerBtn.addEventListener('click', function(e) {
+      e.stopPropagation();
+      togglePlay(card, video);
+    });
+  }
+  var media = card.querySelector('.reel-media');
+  if (media) {
+    media.addEventListener('click', function(e) {
+      if (e.target.closest('.reel-controls') || e.target.closest('.reel-error')) return;
+      togglePlay(card, video);
+    });
+  }
+
+  // Controls bar buttons
+  var playBtn = card.querySelector('.reel-play');
+  if (playBtn) {
+    playBtn.addEventListener('click', function(e) { e.stopPropagation(); togglePlay(card, video); });
+  }
+  var muteBtn = card.querySelector('.reel-mute');
+  if (muteBtn) {
+    muteBtn.addEventListener('click', function(e) {
+      e.stopPropagation();
+      video.muted = !video.muted;
+      prefersMuted = video.muted;
+      try { localStorage.setItem(MUTE_KEY, String(!prefersMuted)); } catch (e2) {}
+      updateMuteIcon(card, video.muted);
+      // Apply to all other reels
+      document.querySelectorAll('.reel-card video').forEach(function(v) {
+        if (v !== video) { v.muted = prefersMuted; updateMuteIcon(v.closest('.reel-card'), prefersMuted); }
+      });
+    });
+  }
+  var fsBtn = card.querySelector('.reel-fs');
+  if (fsBtn) {
+    fsBtn.addEventListener('click', function(e) { e.stopPropagation(); toggleFullscreen(card, video); });
+  }
+
+  // Progress bar interaction
+  var progress = card.querySelector('.reel-progress');
+  if (progress) {
+    var dragging = false;
+    function progressPos(clientX) {
+      var rect = progress.getBoundingClientRect();
+      seekToRatio(video, (clientX - rect.left) / rect.width);
+      updateProgress(card, video);
+    }
+    progress.addEventListener('pointerdown', function(e) {
+      dragging = true; progress.setPointerCapture(e.pointerId); progressPos(e.clientX);
+    });
+    progress.addEventListener('pointermove', function(e) { if (dragging) progressPos(e.clientX); });
+    progress.addEventListener('pointerup', function(e) { dragging = false; });
+    progress.addEventListener('keydown', function(e) {
+      if (e.key === 'ArrowLeft') { e.preventDefault(); video.currentTime = Math.max(0, video.currentTime - 5); }
+      if (e.key === 'ArrowRight') { e.preventDefault(); video.currentTime = Math.min(video.duration || 0, video.currentTime + 5); }
+    });
+  }
+
+  // Controls auto-hide on activity
+  card.addEventListener('pointermove', function() { showControls(card); scheduleHideControls(card, video); });
+  card.addEventListener('pointerleave', function() { scheduleHideControls(card, video); });
+  card.addEventListener('touchstart', function() { showControls(card); scheduleHideControls(card, video); }, { passive: true });
+
+  // Fullscreen state sync
+  document.addEventListener('fullscreenchange', function() {
+    var fsBtn2 = card.querySelector('.reel-fs');
+    if (fsBtn2) {
+      var isFs = document.fullscreenElement === (card.querySelector('.reel-media') || card);
+      fsBtn2.setAttribute('aria-label', isFs ? 'Exit fullscreen' : 'Enter fullscreen');
+      card.classList.toggle('is-fullscreen', isFs);
+    }
+  });
+}
+
+function togglePlay(card, video) {
+  if (video.paused) {
+    video.muted = prefersMuted;
+    video.play().catch(function() {
+      // Autoplay with sound may be blocked — retry muted
+      video.muted = true;
+      prefersMuted = true;
+      updateMuteIcon(card, true);
+      video.play().catch(function() {});
+    });
+  } else {
+    video.pause();
+  }
+}
+
+// Autoplay disabled — videos play only on user interaction (click/Play button).
+// Exclusive playback is enforced via the 'play' event listener in initCustomPlayer.
+
+function registerReelVideo(card, video) {
+  initVideoLoadingHandlers(card, video);
+  initCustomPlayer(card, video);
+  lazyVideoObserver.observe(card);
+}
 
 function renderVideoCards(urls, containerId, slug, limit) {
   const grid = document.getElementById(containerId);
@@ -260,8 +574,7 @@ function renderVideoCards(urls, containerId, slug, limit) {
     fragment.appendChild(card);
 
     const video = card.querySelector('video');
-    initVideoLoadingHandlers(card, video);
-    lazyVideoObserver.observe(card);
+    registerReelVideo(card, video);
 
     card.classList.add('reveal-scale');
     const delay = Math.min(Math.floor(fragment.children.length / 3), 5);
@@ -394,21 +707,28 @@ async function loadVideoCategories() {
   await loadSiteConfig();
   pageMeta = buildPageMeta();
   applyConfigToStaticPages();
-  ensureCategoryContainers();
   handleRoute();
 
-  await Promise.all(CATEGORIES.map(async cat => {
-    const urls = await fetchCategoryUrls(cat.txt);
-    if (urls.length === 0) {
-      // Remove empty featured preview block (e.g. gallery.txt is empty)
-      const emptyPreview = document.getElementById('home-grid-' + cat.slug);
-      if (emptyPreview) emptyPreview.parentElement.remove();
-      return;
-    }
+  const urls = await fetchCategoryUrls('ugc.txt');
+  if (urls.length > 0) {
+    renderVideoCards(urls, 'ugc-video-grid', 'ugc');
+    console.log('[UGC Feed] ugc.txt loaded —', urls.length, 'videos detected,', urls.length, 'rendered.');
+  } else {
+    showUgcEmptyState();
+    console.warn('[UGC Feed] ugc.txt is empty or failed to load.');
+  }
+}
 
-    renderVideoCards(urls, 'home-grid-' + cat.slug, cat.slug, 3);
-    renderVideoCards(urls, 'grid-cat-' + cat.slug, cat.slug);
-  }));
+function showUgcEmptyState() {
+  const grid = document.getElementById('ugc-video-grid');
+  if (!grid) return;
+  grid.innerHTML =
+    '<div class="ugc-empty">' +
+      '<svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">' +
+        '<rect x="5" y="2" width="14" height="20" rx="2"/><line x1="12" y1="18" x2="12.01" y2="18"/>' +
+      '</svg>' +
+      '<p>No videos available yet.</p>' +
+    '</div>';
 }
 
 // ============================================
@@ -552,8 +872,7 @@ function renderSearchResults(query) {
     fragment.appendChild(card);
 
     const video = card.querySelector('video');
-    initVideoLoadingHandlers(card, video);
-    lazyVideoObserver.observe(card);
+    registerReelVideo(card, video);
 
     card.classList.add('reveal-scale');
     const delay = Math.min(Math.floor(fragment.children.length / 3), 5);
@@ -578,37 +897,7 @@ function initVideoSearch() {
 }
 
 // ============================================
-// MOBILE NAVIGATION TOGGLE
-// ============================================
-if (navToggle && navMenu) {
-  navToggle.addEventListener('click', () => {
-    const isActive = navToggle.classList.toggle('active');
-    navMenu.classList.toggle('active');
-    navToggle.setAttribute('aria-expanded', String(isActive));
-    navToggle.setAttribute('aria-label', isActive ? 'إغلاق القائمة' : 'فتح القائمة');
-  });
-
-  navLinks.forEach(link => {
-    link.addEventListener('click', () => {
-      navMenu.classList.remove('active');
-      navToggle.classList.remove('active');
-      navToggle.setAttribute('aria-expanded', 'false');
-      navToggle.setAttribute('aria-label', 'فتح القائمة');
-    });
-  });
-
-  document.addEventListener('click', event => {
-    if (!navToggle.contains(event.target) && !navMenu.contains(event.target)) {
-      navMenu.classList.remove('active');
-      navToggle.classList.remove('active');
-      navToggle.setAttribute('aria-expanded', 'false');
-      navToggle.setAttribute('aria-label', 'فتح القائمة');
-    }
-  });
-}
-
-// ============================================
-// MENU PANEL
+// MENU PANEL — Close handlers
 // ============================================
 let menuLastFocused = null;
 
@@ -616,33 +905,21 @@ function closeMenu() {
   if (!menuPanel) return;
   menuPanel.classList.remove('active');
   menuPanel.setAttribute('aria-hidden', 'true');
-  if (menuBtn) menuBtn.setAttribute('aria-expanded', 'false');
   document.body.style.overflow = '';
   document.body.style.touchAction = '';
   document.body.style.overscrollBehavior = '';
   if (menuLastFocused) menuLastFocused.focus();
 }
 
-if (menuBtn && menuPanel) {
-  menuBtn.addEventListener('click', () => {
-    menuLastFocused = menuBtn;
-    menuPanel.classList.add('active');
-    menuPanel.setAttribute('aria-hidden', 'false');
-    menuBtn.setAttribute('aria-expanded', 'true');
-    document.body.style.overflow = 'hidden';
-    document.body.style.touchAction = 'none';
-    document.body.style.overscrollBehavior = 'none';
-    setTimeout(() => { if (menuClose) menuClose.focus(); }, 100);
-  });
+if (menuClose) {
+  menuClose.addEventListener('click', closeMenu);
+}
 
-  if (menuClose) {
-    menuClose.addEventListener('click', closeMenu);
-  }
+menuItems.forEach(item => {
+  item.addEventListener('click', closeMenu);
+});
 
-  menuItems.forEach(item => {
-    item.addEventListener('click', closeMenu);
-  });
-
+if (menuPanel) {
   menuPanel.addEventListener('click', e => {
     if (e.target === menuPanel) closeMenu();
   });
@@ -672,26 +949,6 @@ if (menuBtn && menuPanel) {
     }
   });
 }
-
-// ============================================
-// BOTTOM NAVIGATION
-// Click handler: active state toggle + ripple effect
-// ============================================
-bottomNavItems.forEach(item => {
-  item.addEventListener('click', function(e) {
-    bottomNavItems.forEach(i => i.classList.remove('active'));
-    this.classList.add('active');
-
-    // Ripple effect
-    const ripple = document.createElement('span');
-    ripple.className = 'ripple';
-    const rect = this.getBoundingClientRect();
-    ripple.style.left = (e.clientX - rect.left) + 'px';
-    ripple.style.top = (e.clientY - rect.top) + 'px';
-    this.appendChild(ripple);
-    setTimeout(() => ripple.remove(), 600);
-  });
-});
 
 // ============================================
 // SPA ROUTER — Clean URL Routing
@@ -775,9 +1032,9 @@ window.addEventListener('popstate', handleRoute);
 // ============================================
 // DYNAMIC SEO META UPDATES
 // ============================================
-const BASE_URL = 'https://photographypixell.com';
-const DEFAULT_TITLE = 'Photography Pixel | وكالة تصوير وتسويق رقمي في أيت ملول - أكادير';
-const DEFAULT_DESC = 'Photography Pixel: وكالة تصوير وتسويق رقمي متخصصة في صناعة المحتوى، تصوير المنتجات، المحلات التجارية، فيديوهات UGC والأعراس في أيت ملول - أكادير.';
+const BASE_URL = 'https://ugc-studio-3.vercel.app';
+const DEFAULT_TITLE = 'UGC Studio 3 | وكالة تصوير وتسويق رقمي في أيت ملول - أكادير';
+const DEFAULT_DESC = 'UGC Studio 3: وكالة تصوير وتسويق رقمي متخصصة في صناعة المحتوى، تصوير المنتجات، المحلات التجارية، فيديوهات UGC والأعراس في أيت ملول - أكادير.';
 
 // pageMeta is now built dynamically from data/config.json via buildPageMeta().
 // Fallback values ensure the site works even if config.json fails to load.
@@ -857,14 +1114,6 @@ function showPage(pageName) {
     const homePage = document.getElementById('page-home');
     if (homePage) homePage.classList.add('active');
   }
-
-  // Update bottom nav active states
-  bottomNavItems.forEach(item => {
-    item.classList.remove('active');
-    if (item.dataset.nav === pageName) {
-      item.classList.add('active');
-    }
-  });
 
   // Update category card active states
   document.querySelectorAll('.services-nav .service-circle, .services-nav-expanded .service-circle').forEach(item => {
@@ -964,7 +1213,7 @@ document.addEventListener('click', function(e) {
   }
   msg += '\nشكراً.';
 
-  const waUrl = 'https://wa.me/212663493003?text=' + encodeURIComponent(msg);
+  const waUrl = 'https://wa.me/212705358158?text=' + encodeURIComponent(msg);
   window.open(waUrl, '_blank', 'noopener');
 });
 
@@ -1098,9 +1347,8 @@ document.addEventListener('DOMContentLoaded', () => {
   // loadVideoCategories() calls handleRoute() after dynamic pages are created.
   // Calling handleRoute() here would race — category page-views don't exist yet.
 
-  // Critical path: load video categories first
+  // Critical path: load UGC videos
   loadVideoCategories();
-  initVideoSearch();
 
   // Defer non-critical loaders to idle
   if ('requestIdleCallback' in window) {
@@ -1112,7 +1360,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // Add reveal classes to key elements (single query batch)
   const revealAdditions = [
     ['.profile-card', 'reveal'],
-    ['.portfolio-shell', 'reveal reveal-delay-2'],
+    ['.ugc-feed', 'reveal reveal-delay-2'],
     ['.footer', 'reveal reveal-delay-3'],
     ['.avatar-ring', 'reveal-scale'],
     ['.profile-info', 'reveal reveal-delay-1'],
@@ -1542,7 +1790,7 @@ window.addEventListener('load', () => {
       const y = (height - barHeight) / 2;
 
       if (i / barCount <= progress) {
-        voCtx.fillStyle = '#2F6BFF';
+        voCtx.fillStyle = '#D4AF37';
       } else {
         voCtx.fillStyle = 'rgba(0, 0, 0, 0.12)';
       }
