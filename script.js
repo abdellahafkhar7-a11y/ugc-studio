@@ -129,18 +129,18 @@ function buildPageMeta() {
     crumb: sp.home ? sp.home.crumb : 'Home'
   };
   meta['home-portfolio'] = {
-    title: (sp['home-portfolio'] && sp['home-portfolio'].seoTitle) || 'Portfolio | UGC Studio 3',
+    title: (sp['home-portfolio'] && sp['home-portfolio'].seoTitle) || 'Portfolio | Photography Pixel',
     desc: (sp['home-portfolio'] && sp['home-portfolio'].seoDescription) || 'استعرض أحدث أعمالنا الإبداعية: فيديوهات UGC، تصوير، محلات تجارية، أعراس وخدمات احترافية في أيت ملول - أكادير.',
     crumb: (sp['home-portfolio'] && sp['home-portfolio'].crumb) || 'Portfolio'
   };
   meta['home-contact'] = {
-    title: (sp['home-contact'] && sp['home-contact'].seoTitle) || 'Contact | UGC Studio 3',
-    desc: (sp['home-contact'] && sp['home-contact'].seoDescription) || 'تواصل مع وكالة UGC Studio 3 لخدمات التصوير والتسويق الرقمي في أيت ملول - أكادير. واتساب، إنستغرام، بريد إلكتروني.',
+    title: (sp['home-contact'] && sp['home-contact'].seoTitle) || 'Contact | Photography Pixel',
+    desc: (sp['home-contact'] && sp['home-contact'].seoDescription) || 'تواصل مع وكالة Photography Pixel لخدمات التصوير والتسويق الرقمي في أيت ملول - أكادير. واتساب، إنستغرام، بريد إلكتروني.',
     crumb: (sp['home-contact'] && sp['home-contact'].crumb) || 'Contact'
   };
   meta['equipment'] = {
-    title: (sp.equipment && sp.equipment.seoTitle) || 'Equipment | UGC Studio 3',
-    desc: (sp.equipment && sp.equipment.seoDescription) || 'تعرف على معدات الاستوديو الاحترافية المستخدمة في وكالة UGC Studio 3.',
+    title: (sp.equipment && sp.equipment.seoTitle) || 'Equipment | Photography Pixel',
+    desc: (sp.equipment && sp.equipment.seoDescription) || 'تعرف على معدات الاستوديو الاحترافية المستخدمة في وكالة Photography Pixel.',
     crumb: (sp.equipment && sp.equipment.crumb) || 'Equipment'
   };
 
@@ -148,7 +148,7 @@ function buildPageMeta() {
   CATEGORIES.forEach(cat => {
     const pageKey = 'cat-' + cat.slug;
     meta[pageKey] = {
-      title: getConfig(cat.slug, 'seoTitle', cat.label + ' | UGC Studio 3'),
+      title: getConfig(cat.slug, 'seoTitle', cat.label + ' | Photography Pixel'),
       desc: getConfig(cat.slug, 'seoDescription', ''),
       crumb: getConfig(cat.slug, 'label', cat.label)
     };
@@ -157,7 +157,7 @@ function buildPageMeta() {
   // Expanded nav items (models, media-buyer, voiceover)
   EXPANDED_NAV_ITEMS.forEach(item => {
     meta[item.nav] = {
-      title: getConfig(item.nav, 'seoTitle', item.label + ' | UGC Studio 3'),
+      title: getConfig(item.nav, 'seoTitle', item.label + ' | Photography Pixel'),
       desc: getConfig(item.nav, 'seoDescription', ''),
       crumb: getConfig(item.nav, 'label', item.label)
     };
@@ -1033,8 +1033,8 @@ window.addEventListener('popstate', handleRoute);
 // DYNAMIC SEO META UPDATES
 // ============================================
 const BASE_URL = 'https://ugc-studio-3.vercel.app';
-const DEFAULT_TITLE = 'UGC Studio 3 | وكالة تصوير وتسويق رقمي في أيت ملول - أكادير';
-const DEFAULT_DESC = 'UGC Studio 3: وكالة تصوير وتسويق رقمي متخصصة في صناعة المحتوى، تصوير المنتجات، المحلات التجارية، فيديوهات UGC والأعراس في أيت ملول - أكادير.';
+const DEFAULT_TITLE = 'Photography Pixel | وكالة تصوير وتسويق رقمي في أيت ملول - أكادير';
+const DEFAULT_DESC = 'Photography Pixel: وكالة تصوير وتسويق رقمي متخصصة في صناعة المحتوى، تصوير المنتجات، المحلات التجارية، فيديوهات UGC والأعراس في أيت ملول - أكادير.';
 
 // pageMeta is now built dynamically from data/config.json via buildPageMeta().
 // Fallback values ensure the site works even if config.json fails to load.
@@ -1790,7 +1790,7 @@ window.addEventListener('load', () => {
       const y = (height - barHeight) / 2;
 
       if (i / barCount <= progress) {
-        voCtx.fillStyle = '#D4AF37';
+        voCtx.fillStyle = '#2F7BFF';
       } else {
         voCtx.fillStyle = 'rgba(0, 0, 0, 0.12)';
       }
