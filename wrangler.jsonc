@@ -1,0 +1,15 @@
+{
+  "$schema": "./node_modules/wrangler/config-schema.json",
+  "name": "poromo-photography-pixel",
+  "compatibility_date": "2026-09-12",
+  // Assemble the deployable site into dist/ before every deploy.
+  // prep-dist.mjs copies only website files (prerendered pages, assets/,
+  // data/, styles.css, script.js, _headers, _redirects, …) — never
+  // node_modules or build tooling.
+  "build": {
+    "command": "npm run build && node prep-dist.mjs"
+  },
+  "assets": {
+    "directory": "./dist"
+  }
+}
