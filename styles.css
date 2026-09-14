@@ -397,7 +397,7 @@ footer[id] {
   justify-content: flex-end;
   width: 100%;
   max-width: 100%;
-  min-height: 320px;
+  min-height: 620px;
   padding: var(--space-7);
   color: #fff;
   background-image: url("/assets/images/og-cover.png");
@@ -427,16 +427,16 @@ footer[id] {
   height: 210px;
   margin-top: -105px;
   place-items: center;
-  border-radius: 50%;
-  padding: 5px;
+  border-radius: 100%;
+  padding: 6px;
   background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary), var(--accent-tertiary));
-  box-shadow: 0 0 30px rgba(47, 123, 255, 0.3);
+  box-shadow: 0 0 30px rgba(240, 239, 239, 0.3);
   transition: all var(--transition-bounce);
 }
 
 .avatar-ring:hover {
   transform: scale(1.05);
-  box-shadow: 0 0 40px rgba(47, 123, 255, 0.5);
+  box-shadow: 0 0 40px rgba(22, 1, 138, 0.5);
 }
 
 .avatar-ring:active {
@@ -577,12 +577,12 @@ footer[id] {
 .btn-whatsapp {
   background: var(--gradient-cinematic);
   color: #fff;
-  box-shadow: 0 4px 15px rgba(47, 123, 255, 0.35);
+  
 }
 
 .btn-whatsapp:hover {
   transform: translateY(-3px) scale(1.03);
-  box-shadow: 0 8px 25px rgba(47, 123, 255, 0.5);
+  box-shadow: 0 8px 25px rgba(3, 158, 62, 0.822);
 }
 
 .btn-contact {
@@ -596,7 +596,7 @@ footer[id] {
 .btn-contact:hover {
   transform: translateY(-3px) scale(1.03);
   border-color: var(--accent-primary);
-  box-shadow: 0 8px 25px rgba(47, 123, 255, 0.3);
+  
 }
 
 .btn-email {
@@ -638,7 +638,7 @@ footer[id] {
   border-radius: var(--radius-full);
   box-shadow: 
     0 4px 15px rgba(47, 123, 255, 0.35),
-    0 0 0 0 rgba(47, 123, 255, 0.4);
+    0 0 0 0 rgba(255, 255, 255, 0.4);
   font-size: var(--text-base);
   letter-spacing: 0.02em;
 }
