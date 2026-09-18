@@ -1,5 +1,5 @@
 /**
- * Prep Dist — Photography Pixel
+ * Prep Dist — UGC Studio
  *
  * Assembles the deployable static site into /dist for Cloudflare
  * Workers Static Assets. Wrangler deploys exactly this directory

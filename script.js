@@ -72,13 +72,7 @@ document.addEventListener('contextmenu', e => {
 // ============================================
 
 const CATEGORIES = [
-  { slug: 'ugc',      label: 'UGC',       txt: 'ugc.txt',      route: 'ugc',         icon: '<rect x="5" y="2" width="14" height="20" rx="2" ry="2"></rect><line x1="12" y1="18" x2="12.01" y2="18"></line>' },
-  { slug: 'shoting',  label: 'Shooting',  txt: 'shooting.txt', route: 'shooting',    icon: '<path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path><circle cx="12" cy="13" r="4"></circle>' },
-  { slug: 'stores',   label: 'Stores',    txt: 'stores.txt',   route: 'stores',      icon: '<path d="M3 9l1-5h16l1 5"></path><path d="M4 9v11a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1V9"></path><path d="M9 21v-6h6v6"></path><path d="M3 9h18"></path>' },
-  { slug: 'events',   label: 'Events',    txt: 'events.txt',   route: 'events',      icon: '<rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line>' },
-  { slug: 'services', label: 'Services',  txt: 'services.txt',  route: 'services',    icon: '<path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 16.8l-6.2 4.5 2.4-7.4L2 9.4h7.6L12 2z"></path>' },
-  { slug: 'gallery',  label: 'Gallery',   txt: 'gallery.txt',  route: 'gallery',     icon: '<rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline>', expanded: true },
-  { slug: 'drone',    label: 'Locations', txt: 'drone.txt',     route: 'drone',       icon: '<path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle>' }
+  { slug: 'ugc',      label: 'UGC',       txt: 'ugc.txt',     route: 'ugc',      icon: '<rect x="5" y="2" width="14" height="20" rx="2" ry="2"></rect><line x1="12" y1="18" x2="12.01" y2="18"></line>' }
 ];
 
 // Build categoryLabels from CATEGORIES
@@ -129,18 +123,18 @@ function buildPageMeta() {
     crumb: sp.home ? sp.home.crumb : 'Home'
   };
   meta['home-portfolio'] = {
-    title: (sp['home-portfolio'] && sp['home-portfolio'].seoTitle) || 'Portfolio | Photography Pixel',
+    title: (sp['home-portfolio'] && sp['home-portfolio'].seoTitle) || 'Portfolio | UGC Studio',
     desc: (sp['home-portfolio'] && sp['home-portfolio'].seoDescription) || 'استعرض أحدث أعمالنا الإبداعية: فيديوهات UGC، تصوير، محلات تجارية، أعراس وخدمات احترافية في أيت ملول - أكادير.',
     crumb: (sp['home-portfolio'] && sp['home-portfolio'].crumb) || 'Portfolio'
   };
   meta['home-contact'] = {
-    title: (sp['home-contact'] && sp['home-contact'].seoTitle) || 'Contact | Photography Pixel',
-    desc: (sp['home-contact'] && sp['home-contact'].seoDescription) || 'تواصل مع وكالة Photography Pixel لخدمات التصوير والتسويق الرقمي في أيت ملول - أكادير. واتساب، إنستغرام، بريد إلكتروني.',
+    title: (sp['home-contact'] && sp['home-contact'].seoTitle) || 'Contact | UGC Studio',
+    desc: (sp['home-contact'] && sp['home-contact'].seoDescription) || 'تواصل مع وكالة UGC Studio لخدمات التصوير والتسويق الرقمي في أيت ملول - أكادير. واتساب، إنستغرام، بريد إلكتروني.',
     crumb: (sp['home-contact'] && sp['home-contact'].crumb) || 'Contact'
   };
   meta['equipment'] = {
-    title: (sp.equipment && sp.equipment.seoTitle) || 'Equipment | Photography Pixel',
-    desc: (sp.equipment && sp.equipment.seoDescription) || 'تعرف على معدات الاستوديو الاحترافية المستخدمة في وكالة Photography Pixel.',
+    title: (sp.equipment && sp.equipment.seoTitle) || 'Equipment | UGC Studio',
+    desc: (sp.equipment && sp.equipment.seoDescription) || 'تعرف على معدات الاستوديو الاحترافية المستخدمة في وكالة UGC Studio.',
     crumb: (sp.equipment && sp.equipment.crumb) || 'Equipment'
   };
 
@@ -148,7 +142,7 @@ function buildPageMeta() {
   CATEGORIES.forEach(cat => {
     const pageKey = 'cat-' + cat.slug;
     meta[pageKey] = {
-      title: getConfig(cat.slug, 'seoTitle', cat.label + ' | Photography Pixel'),
+      title: getConfig(cat.slug, 'seoTitle', cat.label + ' | UGC Studio'),
       desc: getConfig(cat.slug, 'seoDescription', ''),
       crumb: getConfig(cat.slug, 'label', cat.label)
     };
@@ -157,7 +151,7 @@ function buildPageMeta() {
   // Expanded nav items (models, media-buyer, voiceover)
   EXPANDED_NAV_ITEMS.forEach(item => {
     meta[item.nav] = {
-      title: getConfig(item.nav, 'seoTitle', item.label + ' | Photography Pixel'),
+      title: getConfig(item.nav, 'seoTitle', item.label + ' | UGC Studio'),
       desc: getConfig(item.nav, 'seoDescription', ''),
       crumb: getConfig(item.nav, 'label', item.label)
     };
@@ -227,44 +221,87 @@ async function fetchCategoryUrls(txtFile) {
 }
 
 function createReelCard(url) {
-  var card = document.createElement('article');
-  card.className = 'reel-card is-paused';
-  card.setAttribute('data-url', url);
-  card.innerHTML =
-    '<div class="reel-media">' +
-      '<video data-video-src="' + url + '" muted loop playsinline webkit-playsinline preload="none" disablePictureInPicture controlsList="nodownload noplaybackrate" oncontextmenu="return false">' +
-      '</video>' +
-      '<div class="reel-error" hidden>' +
-        '<svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>' +
-        '<span>Unable to load video</span>' +
-      '</div>' +
-    '</div>' +
-    '<button class="reel-center-play" type="button" aria-label="Play">' +
-      '<svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>' +
+var card = document.createElement('article');
+card.className = 'reel-card is-paused';
+card.setAttribute('data-url', url);
+
+card.innerHTML =
+'<div class="reel-media">' +
+'<video data-video-src="' + url + '" muted loop playsinline webkit-playsinline preload="none" disablePictureInPicture controlsList="nodownload noplaybackrate" oncontextmenu="return false">' +
+'</video>' +
+'<div class="reel-error" hidden>' +
+'<svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">' +
+'<path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>' +
+'<polyline points="17 8 12 3 7 8"/>' +
+'<line x1="12" y1="3" x2="12" y2="15"/>' +
+'</svg>' +
+'<span>Unable to load video</span>' +
+'</div>' +
+'</div>' +
+
+'<button class="reel-center-play" type="button" aria-label="Play">' +
+  '<svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor">' +
+    '<path d="M8 5v14l11-7z"/>' +
+  '</svg>' +
+'</button>' +
+
+'<div class="reel-controls">' +
+  '<div class="reel-progress" role="slider" aria-label="Seek" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" tabindex="0">' +
+    '<div class="reel-progress-buffer"></div>' +
+    '<div class="reel-progress-fill"></div>' +
+  '</div>' +
+
+  '<div class="reel-ctrl-row">' +
+
+    '<button class="reel-btn reel-play" type="button" aria-label="Play">' +
+      '<svg class="ic-play" viewBox="0 0 24 24" fill="currentColor">' +
+        '<path d="M8 5v14l11-7z"/>' +
+      '</svg>' +
+      '<svg class="ic-pause" viewBox="0 0 24 24" fill="currentColor">' +
+        '<path d="M6 4h4v16H6zM14 4h4v16h-4z"/>' +
+      '</svg>' +
     '</button>' +
-    '<div class="reel-controls">' +
-      '<div class="reel-progress" role="slider" aria-label="Seek" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" tabindex="0">' +
-        '<div class="reel-progress-buffer"></div>' +
-        '<div class="reel-progress-fill"></div>' +
-      '</div>' +
-      '<div class="reel-ctrl-row">' +
-        '<button class="reel-btn reel-play" type="button" aria-label="Play">' +
-          '<svg class="ic-play" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>' +
-          '<svg class="ic-pause" viewBox="0 0 24 24" fill="currentColor"><path d="M6 4h4v16H6zM14 4h4v16h-4z"/></svg>' +
-        '</button>' +
-        '<button class="reel-btn reel-mute" type="button" aria-label="Unmute">' +
-          '<svg class="ic-vol-on" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" fill="currentColor"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg>' +
-          '<svg class="ic-vol-off" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" fill="currentColor"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg>' +
-        '</button>' +
-        '<span class="reel-time"><span class="reel-cur">0:00</span><span class="reel-sep">/</span><span class="reel-dur">0:00</span></span>' +
-        '<button class="reel-btn reel-fs" type="button" aria-label="Enter fullscreen">' +
-          '<svg class="ic-fs-enter" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9V4h5"/><path d="M20 9V4h-5"/><path d="M4 15v5h5"/><path d="M20 15v5h-5"/></svg>' +
-          '<svg class="ic-fs-exit" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 4v5H4"/><path d="M15 4v5h5"/><path d="M9 20v-5H4"/><path d="M15 20v-5h5"/></svg>' +
-        '</button>' +
-      '</div>' +
-    '</div>';
-  return card;
+
+    '<button class="reel-btn reel-mute" type="button" aria-label="Unmute">' +
+      '<svg class="ic-vol-on" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">' +
+        '<polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 11 5" fill="currentColor"/>' +
+        '<path d="M15.54 8.46a5 5 0 0 1 0 7.07"/>' +
+        '<path d="M19.07 4.93a10 10 0 0 1 0 14.14"/>' +
+      '</svg>' +
+      '<svg class="ic-vol-off" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">' +
+        '<polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 11 5" fill="currentColor"/>' +
+        '<line x1="23" y1="9" x2="17" y2="15"/>' +
+        '<line x1="17" y1="9" x2="23" y2="15"/>' +
+      '</svg>' +
+    '</button>' +
+
+    '<span class="reel-time">' +
+      '<span class="reel-cur">0:00</span>' +
+      '<span class="reel-sep">/</span>' +
+      '<span class="reel-dur">0:00</span>' +
+'</span>' +
+
+'<button class="reel-btn reel-fs" type="button" aria-label="Enter fullscreen">' +
+  '<svg class="ic-fs-enter" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">' +
+    '<path d="M8 3H5a2 2 0 0 0-2 2v3"/>' +
+    '<path d="M21 8V5a2 2 0 0 0-2-2h-3"/>' +
+    '<path d="M3 16v3a2 2 0 0 0 2 2h3"/>' +
+    '<path d="M16 21h3a2 2 0 0 0 2-2v-3"/>' +
+  '</svg>' +
+  '<svg class="ic-fs-exit" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">' +
+    '<path d="M8 3v3a2 2 0 0 1-2 2H3"/>' +
+    '<path d="M21 8h-3a2 2 0 0 1-2-2V3"/>' +
+    '<path d="M3 16h3a2 2 0 0 1 2 2v3"/>' +
+    '<path d="M16 21v-3a2 2 0 0 1 2-2h3"/>' +
+  '</svg>' +
+'</button>' +
+
+'</div>' +
+'</div>';
+
+return card;
 }
+
 
 // Lazy-load video sources via IntersectionObserver
 // Sets video.src directly (no <source> child) then calls load()
@@ -630,17 +667,6 @@ function ensureCategoryContainers() {
   CATEGORIES.forEach(cat => {
     const slug = cat.slug;
 
-    // Featured preview block on homepage
-    if (!document.getElementById('home-grid-' + slug)) {
-      const preview = document.createElement('div');
-      preview.className = 'featured-preview';
-      preview.innerHTML =
-        '<h3 class="featured-preview-title">' + getConfig(slug, 'title', cat.label) + '</h3>' +
-        '<div class="video-grid active" data-panel="' + slug + '" id="home-grid-' + slug + '"></div>' +
-        '<a href="/' + cat.route + '" class="view-all-btn" data-nav="cat-' + slug + '">' + getConfig(slug, 'buttonLabel', 'عرض المزيد') + '</a>';
-      portfolioShell.appendChild(preview);
-    }
-
     // Service circle in nav — main or expanded section
     const navTarget = cat.expanded ? servicesNavExpanded : servicesNavMain;
     const navAttr = 'cat-' + slug;
@@ -707,6 +733,7 @@ async function loadVideoCategories() {
   await loadSiteConfig();
   pageMeta = buildPageMeta();
   applyConfigToStaticPages();
+  ensureCategoryContainers();
   handleRoute();
 
   const urls = await fetchCategoryUrls('ugc.txt');
@@ -717,6 +744,18 @@ async function loadVideoCategories() {
     showUgcEmptyState();
     console.warn('[UGC Feed] ugc.txt is empty or failed to load.');
   }
+
+  await Promise.all(CATEGORIES.map(async cat => {
+    const catUrls = await fetchCategoryUrls(cat.txt-induced);
+    if (catUrls.length === 0) {
+      return;
+    }
+
+    renderVideoCards(catUrls, 'grid-cat-' + cat.slug, cat.slug);
+  }));
+
+  const searchInput = document.getElementById('video-search-input');
+  if (searchInput) initVideoSearch();
 }
 
 function showUgcEmptyState() {
@@ -915,6 +954,30 @@ if (menuClose) {
   menuClose.addEventListener('click', closeMenu);
 }
 
+function openMenu() {
+  if (!menuPanel) return;
+  menuPanel.classList.add('active');
+  menuPanel.setAttribute('aria-hidden', 'false');
+  document.body.style.overflow = 'hidden';
+  document.body.style.touchAction = 'none';
+  document.body.style.overscrollBehavior = 'none';
+  const menuToggleBtn = document.querySelector('#menu-btn');
+  if (menuToggleBtn) menuToggleBtn.setAttribute('aria-expanded', 'true');
+  if (menuClose) setTimeout(() => menuClose.focus(), 100);
+}
+
+const menuToggleBtn = document.querySelector('#menu-btn');
+if (menuToggleBtn) {
+  menuToggleBtn.addEventListener('click', function() {
+    if (menuPanel && menuPanel.classList.contains('active')) {
+      closeMenu();
+      menuToggleBtn.setAttribute('aria-expanded', 'false');
+    } else {
+      openMenu();
+    }
+  });
+}
+
 menuItems.forEach(item => {
   item.addEventListener('click', closeMenu);
 });
@@ -957,13 +1020,6 @@ if (menuPanel) {
 // Route map: URL path → page name
 const ROUTES = {
   'ugc': 'cat-ugc',
-  'stores': 'cat-stores',
-  'events': 'cat-events',
-  'shooting': 'cat-shoting',
-  'photography': 'cat-services',
-  'services': 'cat-services',
-  'gallery': 'cat-gallery',
-  'drone': 'cat-drone',
   'portfolio': 'home-portfolio',
   'voice-over': 'voiceover',
   'media-buyer': 'media-buyer',
@@ -1033,8 +1089,8 @@ window.addEventListener('popstate', handleRoute);
 // DYNAMIC SEO META UPDATES
 // ============================================
 const BASE_URL = 'https://ugc-studio-3.vercel.app';
-const DEFAULT_TITLE = 'Photography Pixel | وكالة تصوير وتسويق رقمي في أيت ملول - أكادير';
-const DEFAULT_DESC = 'Photography Pixel: وكالة تصوير وتسويق رقمي متخصصة في صناعة المحتوى، تصوير المنتجات، المحلات التجارية، فيديوهات UGC والأعراس في أيت ملول - أكادير.';
+const DEFAULT_TITLE = 'UGC Studio | وكالة إنتاج محتوى UGC وتصوير وتسويق رقمي في أيت ملول - أكادير';
+const DEFAULT_DESC = 'UGC Studio: وكالة إنتاج محتوى UGC وتصوير وتسويق رقمي متخصصة في صناعة المحتوى، تصوير المنتجات، المحلات التجارية، فيديوهات UGC والأعراس في أيت ملول - أكادير.';
 
 // pageMeta is now built dynamically from data/config.json via buildPageMeta().
 // Fallback values ensure the site works even if config.json fails to load.
@@ -1213,7 +1269,7 @@ document.addEventListener('click', function(e) {
   }
   msg += '\nشكراً.';
 
-  const waUrl = 'https://wa.me/212705358158?text=' + encodeURIComponent(msg);
+  const waUrl = 'https://wa.me/212670429493?text=' + encodeURIComponent(msg);
   window.open(waUrl, '_blank', 'noopener');
 });
 
@@ -1394,6 +1450,14 @@ document.addEventListener('DOMContentLoaded', () => {
 window.addEventListener('load', () => {
   window.scrollTo(0, 0);
 });
+
+// Navbar scroll state
+const siteNav = document.querySelector('.site-nav');
+if (siteNav) {
+  const updateNavState = () => siteNav.classList.toggle('is-scrolled', window.scrollY > 12);
+  window.addEventListener('scroll', updateNavState, { passive: true });
+  updateNavState();
+}
 
 // ============================================
 // VOICE OVER SECTION

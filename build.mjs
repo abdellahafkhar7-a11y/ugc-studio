@@ -1,5 +1,5 @@
 /**
- * Prerender Script — Photography Pixel
+ * Prerender Script — UGC Studio
  *
  * Reads index.html as a template and generates static HTML for every
  * public route with unique <title>, meta description, canonical URL,
@@ -16,8 +16,8 @@ import { fileURLToPath } from 'url';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const BASE_URL = 'https://ugc-studio-3.vercel.app';
-const OG_IMAGE = `${BASE_URL}/assets/images/og-cover.png`;
-const FALLBACK_THUMBNAIL = `${BASE_URL}/assets/images/logo.png`;
+const OG_IMAGE = `${BASE_URL}/assets/images/logo%20ugc%20studio.jpg`;
+const FALLBACK_THUMBNAIL = `${BASE_URL}/assets/images/logo%20ugc%20studio.jpg`;
 
 // ── Helpers ──────────────────────────────────────────────
 
@@ -68,8 +68,8 @@ function generateVideoSchema(videos, categoryLabel) {
     const rawName = decodeURIComponent(url.split('/').pop() || '').replace(/\.mp4$/i, '');
     return {
       '@type': 'VideoObject',
-      name: `${rawName} — ${categoryLabel} | Photography Pixel`,
-      description: `${categoryLabel} video by Photography Pixel — وكالة تصوير وتسويق رقمي في أيت ملول - أكادير`,
+      name: `${rawName} — ${categoryLabel} | UGC Studio`,
+      description: `${categoryLabel} video by UGC Studio — وكالة إنتاج محتوى UGC وتصوير وتسويق رقمي في أيت ملول - أكادير`,
       thumbnailUrl: FALLBACK_THUMBNAIL,
       contentUrl: url,
       encodingFormat: 'video/mp4',
@@ -86,8 +86,8 @@ const config = JSON.parse(fs.readFileSync(path.join(__dirname, 'data', 'config.j
 
 // ── Route definitions ───────────────────────────────────
 
-const DEFAULT_TITLE = getStaticConfig('home', 'seoTitle', 'Photography Pixel | وكالة تصوير وتسويق رقمي في أيت ملول - أكادير');
-const DEFAULT_DESC = getStaticConfig('home', 'seoDescription', 'Photography Pixel: وكالة تصوير وتسويق رقمي متخصصة في صناعة المحتوى، تصوير المنتجات، المحلات التجارية، فيديوهات UGC والأعراس في أيت ملول - أكادير.');
+const DEFAULT_TITLE = getStaticConfig('home', 'seoTitle', 'UGC Studio | وكالة إنتاج محتوى UGC وتصوير وتسويق رقمي في أيت ملول - أكادير');
+const DEFAULT_DESC = getStaticConfig('home', 'seoDescription', 'UGC Studio: وكالة إنتاج محتوى UGC وتصوير وتسويق رقمي متخصصة في صناعة المحتوى، تصوير المنتجات، المحلات التجارية، فيديوهات UGC والأعراس في أيت ملول - أكادير.');
 
 const staticRoutes = [
   {
@@ -98,58 +98,52 @@ const staticRoutes = [
   },
   {
     route: 'portfolio', page: 'home-portfolio',
-    title: getStaticConfig('home-portfolio', 'seoTitle', 'Portfolio | Photography Pixel'),
+    title: getStaticConfig('home-portfolio', 'seoTitle', 'Portfolio | UGC Studio'),
     desc: getStaticConfig('home-portfolio', 'seoDescription', 'استعرض أحدث أعمالنا الإبداعية: فيديوهات UGC، تصوير، محلات تجارية، أعراس وخدمات احترافية في أيت ملول - أكادير.'),
     crumb: getStaticConfig('home-portfolio', 'crumb', 'Portfolio')
   },
   {
     route: 'contact', page: 'home-contact',
-    title: getStaticConfig('home-contact', 'seoTitle', 'Contact | Photography Pixel'),
-    desc: getStaticConfig('home-contact', 'seoDescription', 'تواصل مع وكالة Photography Pixel لخدمات التصوير والتسويق الرقمي في أيت ملول - أكادير. واتساب، إنستغرام، بريد إلكتروني.'),
+    title: getStaticConfig('home-contact', 'seoTitle', 'Contact | UGC Studio'),
+    desc: getStaticConfig('home-contact', 'seoDescription', 'تواصل مع وكالة UGC Studio لخدمات التصوير والتسويق الرقمي في أيت ملول - أكادير. واتساب، إنستغرام، بريد إلكتروني.'),
     crumb: getStaticConfig('home-contact', 'crumb', 'Contact')
   },
   {
     route: 'equipment', page: 'equipment',
-    title: getStaticConfig('equipment', 'seoTitle', 'Equipment | Photography Pixel'),
-    desc: getStaticConfig('equipment', 'seoDescription', 'تعرف على معدات الاستوديو الاحترافية المستخدمة في وكالة Photography Pixel.'),
+    title: getStaticConfig('equipment', 'seoTitle', 'Equipment | UGC Studio'),
+    desc: getStaticConfig('equipment', 'seoDescription', 'تعرف على معدات الاستوديو الاحترافية المستخدمة في وكالة UGC Studio.'),
     crumb: getStaticConfig('equipment', 'crumb', 'Equipment')
   },
   {
     route: 'model', page: 'models',
-    title: getConfig('models', 'seoTitle', 'Models | Photography Pixel'),
-    desc: getConfig('models', 'seoDescription', 'تعرف على موديلات الاستوديو المتاحة للحجز من وكالة Photography Pixel في أيت ملول - أكادير.'),
+    title: getConfig('models', 'seoTitle', 'Models | UGC Studio'),
+    desc: getConfig('models', 'seoDescription', 'تعرف على موديلات الاستوديو المتاحة للحجز من وكالة UGC Studio في أيت ملول - أكادير.'),
     crumb: getConfig('models', 'label', 'Model')
   },
   {
     route: 'media-buyer', page: 'media-buyer',
-    title: getConfig('media-buyer', 'seoTitle', 'Media Buyer | Photography Pixel'),
-    desc: getConfig('media-buyer', 'seoDescription', 'معرض الحملات الإعلانية وأدائها من وكالة Photography Pixel — نتائج قياسية على منصات التواصل الاجتماعي.'),
+    title: getConfig('media-buyer', 'seoTitle', 'Media Buyer | UGC Studio'),
+    desc: getConfig('media-buyer', 'seoDescription', 'معرض الحملات الإعلانية وأدائها من وكالة UGC Studio — نتائج قياسية على منصات التواصل الاجتماعي.'),
     crumb: getConfig('media-buyer', 'label', 'Media Buyer')
   },
   {
     route: 'voice-over', page: 'voiceover',
-    title: getConfig('voiceover', 'seoTitle', 'Voice Over | Photography Pixel'),
-    desc: getConfig('voiceover', 'seoDescription', 'خدمات التعليق الصوتي الاحترافي بالعربية من وكالة Photography Pixel — للإعلانات، الوثائقيات، والمحتوى المؤسسي.'),
+    title: getConfig('voiceover', 'seoTitle', 'Voice Over | UGC Studio'),
+    desc: getConfig('voiceover', 'seoDescription', 'خدمات التعليق الصوتي الاحترافي بالعربية من وكالة UGC Studio — للإعلانات، الوثائقيات، والمحتوى المؤسسي.'),
     crumb: getConfig('voiceover', 'label', 'Voice Over')
   }
 ];
 
 const categoryDefs = [
-  { route: 'ugc',      page: 'cat-ugc',      slug: 'ugc',      txt: 'ugc.txt',      label: 'UGC' },
-  { route: 'shooting', page: 'cat-shoting',  slug: 'shoting',  txt: 'shooting.txt',  label: 'Shooting' },
-  { route: 'stores',   page: 'cat-stores',   slug: 'stores',   txt: 'stores.txt',   label: 'Stores' },
-  { route: 'events',   page: 'cat-events',   slug: 'events',   txt: 'events.txt',   label: 'Events' },
-  { route: 'services', page: 'cat-services', slug: 'services', txt: 'services.txt', label: 'Services' },
-  { route: 'gallery',  page: 'cat-gallery',  slug: 'gallery',  txt: 'gallery.txt',  label: 'Gallery' },
-  { route: 'drone',    page: 'cat-drone',    slug: 'drone',    txt: 'drone.txt',    label: 'Locations' }
+  { route: 'ugc',      page: 'cat-ugc',      slug: 'ugc',      txt: 'ugc.txt',      label: 'UGC' }
 ];
 
 const categoryRoutes = categoryDefs.map(def => {
   const videos = readVideoUrls(def.txt);
   return {
     ...def,
-    title: getConfig(def.slug, 'seoTitle', `${def.label} | Photography Pixel`),
-    desc: getConfig(def.slug, 'seoDescription', `${def.label} videos by Photography Pixel.`),
+    title: getConfig(def.slug, 'seoTitle', `${def.label} | UGC Studio`),
+    desc: getConfig(def.slug, 'seoDescription', `${def.label} videos by UGC Studio.`),
     crumb: getConfig(def.slug, 'label', def.label),
     heading: getConfig(def.slug, 'title', def.label),
     subtitle: getConfig(def.slug, 'subtitle', `${def.label} Videos`),
@@ -252,8 +246,8 @@ function generateRouteHtml(route) {
     const catLinks = generateCategoryLinks('portfolio');
     const portfolioIntro = [
       `      <section class="seo-content-section reveal" id="portfolio-intro">`,
-      `        <h2 class="seo-content-heading">Portfolio — Photography Pixel</h2>`,
-      `        <p class="seo-content-text">Photography Pixel وكالة تصوير وتسويق رقمي في أيت ملول - أكادير. استعرض أحدث أعمالنا الإبداعية في تصوير المنتجات، المحلات التجارية، الأعراس، الفيديوهات الإعلانية، وتصوير المواقع. نقدم محتوى بصري احترافي يخدم العلامات التجارية والشركات والأفراد في المغرب.</p>`,
+      `        <h2 class="seo-content-heading">Portfolio — UGC Studio</h2>`,
+      `        <p class="seo-content-text">UGC Studio وكالة إنتاج محتوى UGC وتصوير وتسويق رقمي في أيت ملول - أكادير. استعرض أحدث أعمالنا الإبداعية في تصوير المنتجات، المحلات التجارية، الأعراس، الفيديوهات الإعلانية، وتصوير المواقع. نقدم محتوى بصري احترافي يخدم العلامات التجارية والشركات والأفراد في المغرب.</p>`,
       `        <nav class="seo-links-nav" aria-label="Categories">`,
       ...catLinks,
       `        </nav>`,
@@ -267,12 +261,12 @@ function generateRouteHtml(route) {
     // Inject contact info section before </main> for unique content
     const contactInfo = [
       `      <section class="seo-content-section reveal" id="contact-info">`,
-      `        <h2 class="seo-content-heading">تواصل مع Photography Pixel</h2>`,
-      `        <p class="seo-content-text">وكالة Photography Pixel لخدمات التصوير والتسويق الرقمي في أيت ملول - أكادير، المغرب. نقدم خدمات تصوير المنتجات، المحلات التجارية، الأعراس، فيديوهات UGC، والحملات الإعلانية.</p>`,
+      `        <h2 class="seo-content-heading">تواصل مع UGC Studio</h2>`,
+      `        <p class="seo-content-text">وكالة UGC Studio لخدمات تصوير وتسويق رقمي وإنتاج محتوى UGC في أيت ملول - أكادير، المغرب. نقدم خدمات تصوير المنتجات، المحلات التجارية، الأعراس، فيديوهات UGC، والحملات الإعلانية.</p>`,
       `        <div class="seo-contact-grid">`,
-      `          <a href="https://wa.me/212705358158" class="seo-contact-item" target="_blank" rel="noreferrer noopener">`,
+      `          <a href="https://wa.me/212670429493" class="seo-contact-item" target="_blank" rel="noreferrer noopener">`,
       `            <span class="seo-contact-label">WhatsApp</span>`,
-      `            <span class="seo-contact-value">+212705358158</span>`,
+      `            <span class="seo-contact-value">+212 670 429 493</span>`,
       `          </a>`,
       `          <a href="https://www.instagram.com/ugcstudio3" class="seo-contact-item" target="_blank" rel="noreferrer noopener">`,
       `            <span class="seo-contact-label">Instagram</span>`,
@@ -349,9 +343,9 @@ function generateRouteHtml(route) {
     if (route.page === 'models') {
       seoSection = [
         `      <section class="seo-content-section active" id="seo-models">`,
-        `        <h2 class="seo-content-heading">استوديو موديلات Photography Pixel</h2>`,
-        `        <p class="seo-content-text">موديلات احترافية متاحة للحجز في أكادير وأيت ملول. نوفّر موديلات لجميع أنواع التصوير: UGC، تصوير المنتجات، الجلسات الإعلانية، الأعراس، والفعاليات. جميع الموديلات لديهم خبرة في التصوير الاحترافي ومتاحون للحجز الفوري عبر واتساب.</p>`,
-        `        <p class="seo-content-text">لحجز موديل، تواصل معنا عبر واتساب: +212705358158 أو عبر صفحة <a href="/contact" class="seo-inline-link">تواصل معنا</a>.</p>`,
+`        <h2 class="seo-content-heading">استوديو موديلات UGC Studio</h2>`,
+      `        <p class="seo-content-text">موديلات احترافية متاحة للحجز في أكادير وأيت ملول. نوفّر موديلات لجميع أنواع التصوير: UGC، تصوير المنتجات، الجلسات الإعلانية، الأعراس، والفعاليات. جميع الموديلات لديهم خبرة في التصوير الاحترافي ومتاحون للحجز الفوري عبر واتساب.</p>`,
+      `        <p class="seo-content-text">لحجز موديل، تواصل معنا عبر واتساب: +212 670 429 493 أو عبر صفحة <a href="/contact" class="seo-inline-link">تواصل معنا</a>.</p>`,
         `        <nav class="seo-links-nav" aria-label="Categories">`,
         ...catLinks,
         `        </nav>`,
@@ -360,7 +354,7 @@ function generateRouteHtml(route) {
     } else if (route.page === 'media-buyer') {
       seoSection = [
         `      <section class="seo-content-section active" id="seo-media-buyer">`,
-        `        <h2 class="seo-content-heading">إدارة الحملات الإعلانية — Photography Pixel</h2>`,
+        `        <h2 class="seo-content-heading">إدارة الحملات الإعلانية — UGC Studio</h2>`,
         `        <p class="seo-content-text">خدمات إدارة الحملات الإعلانية على فيسبوك وإنستغرام. نتائج قياسية في جلب العملاء عبر واتساب والمبيعات المباشرة. نستخدم استهدافاً دقيقاً وإبداعياً للوصول إلى الجمهور المناسب لمنتجك أو خدمتك في المغرب.</p>`,
         `        <p class="seo-content-text">نتائجنا تشمل: حملات بـ ROAS تصل إلى 6.1x، أكثر من 350 رسالة لكل حملة، واستهداف جغرافي دقيق لأكادير وأيت ملول والمناطق المحيطة.</p>`,
         `        <nav class="seo-links-nav" aria-label="Categories">`,
@@ -371,7 +365,7 @@ function generateRouteHtml(route) {
     } else if (route.page === 'equipment') {
       seoSection = [
         `      <section class="seo-content-section active" id="seo-equipment">`,
-        `        <h2 class="seo-content-heading">معدات الاستوديو الاحترافية — Photography Pixel</h2>`,
+        `        <h2 class="seo-content-heading">معدات الاستوديو الاحترافية — UGC Studio</h2>`,
         `        <p class="seo-content-text">نستخدم معدات احترافية متطورة لضمان أعلى جودة في جميع أعمالنا. تشمل معداتنا كاميرات احترافية، عدسات متخصصة، إضاءة استوديو، معدات صوتية، واجهزة تصوير جوي (درون). جميع المعدات تتيح لنا تقديم محتوى بصري بجودة سينمائية.</p>`,
         `        <p class="seo-content-text">سواء كنت تحتاج إلى تصوير منتجات، محلات تجارية، أو فيديوهات UGC، فإن معداتنا توفر نتائج احترافية تلبي متطلبات العلامات التجارية والشركات في المغرب.</p>`,
         `        <nav class="seo-links-nav" aria-label="Categories">`,
@@ -387,7 +381,7 @@ function generateRouteHtml(route) {
     } else if (route.page === 'voiceover') {
       seoSection = [
         `      <section class="seo-content-section active" id="seo-voiceover">`,
-        `        <h2 class="seo-content-heading">التعليق الصوتي الاحترافي — Photography Pixel</h2>`,
+        `        <h2 class="seo-content-heading">التعليق الصوتي الاحترافي — UGC Studio</h2>`,
         `        <p class="seo-content-text">خدمات تعليق صوتي احترافي بالعربية لجميع أنواع المحتوى: الإعلانات التجارية، الوثائقيات، المحتوى المؤسسي، ومحتوى التواصل الاجتماعي. نقدم جودة عالية مع إمكانية التحكم في النبرة والإيقاع حسب طبيعة المحتوى.</p>`,
         `        <p class="seo-content-text">تشمل خدماتنا: التعليق الصوتي للإعلانات، الأفلام القصيرة، العروض التقديمية، ومحتوى يوتيوب. تواصل معنا للاستماع لعينات صوتية ولحجز جلسة تسجيل.</p>`,
         `        <nav class="seo-links-nav" aria-label="Categories">`,
@@ -465,7 +459,7 @@ function generateSitemap() {
 const allRoutes = [...staticRoutes, ...categoryRoutes];
 let generated = 0;
 
-console.log('\n━━━ Photography Pixel — Prerender Build ━━━\n');
+console.log('\n━━━ UGC Studio — Prerender Build ━━━\n');
 
 for (const route of allRoutes) {
   // Skip homepage — already in root

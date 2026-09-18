@@ -1,26 +1,26 @@
 {
-  "name": "Photography Pixel",
-  "short_name": "Photography Pixel",
-  "description": "Photography Pixel — portfolio and creative media showcase.",
+  "name": "UGC Studio",
+  "short_name": "UGC Studio",
+  "description": "UGC Studio — portfolio and creative media showcase.",
   "start_url": "/",
   "display": "standalone",
-  "theme_color": "#000000",
-  "background_color": "#000000",
+  "theme_color": "#0a0a0c",
+  "background_color": "#0a0a0c",
   "icons": [
     {
-      "src": "/assets/images/favicon.png",
-      "sizes": "32x32",
-      "type": "image/png"
+      "src": "/assets/images/favicon.jpg",
+      "sizes": "512x512",
+      "type": "image/jpeg"
     },
     {
-      "src": "/assets/images/apple-touch-icon.png",
-      "sizes": "180x180",
-      "type": "image/png"
+      "src": "/assets/images/apple-touch-icon.jpg",
+      "sizes": "512x512",
+      "type": "image/jpeg"
     },
     {
-      "src": "/assets/images/logo.png",
-      "sizes": "210x210",
-      "type": "image/png"
+      "src": "/assets/images/logo%20ugc%20studio.jpg",
+      "sizes": "512x512",
+      "type": "image/jpeg"
     }
   ]
 }
