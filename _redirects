@@ -1,8 +1,0 @@
-# ── Redirects — UGC Studio ─────────────────────────────────
-# Static files (prerendered HTML, CSS, JS, images, data) are served
-# directly by the hosting provider — no redirect needed for those.
-#
-# Only unknown paths hit the catch-all below.
-
-# /photography and /services serve the same page — canonicalize
-/photography /services 301

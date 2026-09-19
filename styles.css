@@ -10,11 +10,11 @@
   --text-2: rgba(244, 244, 242, 0.74);
   --text-3: rgba(244, 244, 242, 0.5);
   --text-4: rgba(244, 244, 242, 0.34);
-  --accent: #c8f542;
-  --accent-2: #e4ff8d;
-  --accent-dim: rgba(200, 245, 66, 0.12);
-  --accent-glow: rgba(200, 245, 66, 0.32);
-  --on-accent: #12160c;
+  --accent: #F4C542;
+  --accent-2: #FFD84D;
+  --accent-dim: rgba(212, 175, 55, 0.12);
+  --accent-glow: rgba(244, 197, 66, 0.32);
+  --on-accent: #1a1405;
   --whatsapp: #25d366;
   --danger: #ff5b6a;
   --font-sans: "Segoe UI", ui-sans-serif, system-ui, -apple-system, "Helvetica Neue", Arial, "Noto Sans Arabic", sans-serif;
@@ -136,7 +136,7 @@ body.modal-open {
   top: -220px;
   left: 50%;
   transform: translateX(-50%);
-  background: radial-gradient(circle, rgba(200, 245, 66, 0.13), transparent 65%);
+  background: radial-gradient(circle, rgba(244, 197, 66, 0.14), transparent 65%);
 }
 
 .bg-glow-2 {
@@ -503,6 +503,7 @@ body.modal-open {
   font-weight: 800;
   letter-spacing: -0.03em;
   line-height: 1.05;
+  text-shadow: 0 1px 26px rgba(244, 197, 66, 0.35), 0 155px 42px rgba(244, 197, 66, 0.18);
 }
 
 .verified-badge {
@@ -875,54 +876,6 @@ body.modal-open {
 
 .search-no-results svg {
   color: var(--text-4);
-}
-
-.featured-preview {
-  margin-top: 64px;
-  padding-top: 56px;
-  border-top: 1px solid var(--line);
-}
-
-.featured-preview-title {
-  position: relative;
-  font-size: clamp(20px, 2.6vw, 26px);
-  font-weight: 800;
-  letter-spacing: -0.01em;
-  margin-bottom: 24px;
-  padding-right: 18px;
-}
-
-.featured-preview-title::before {
-  content: "";
-  position: absolute;
-  right: 0;
-  top: 50%;
-  transform: translateY(-50%);
-  width: 6px;
-  height: 26px;
-  border-radius: 6px;
-  background: var(--accent);
-}
-
-.view-all-btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  margin-top: 20px;
-  padding: 9px 20px;
-  border-radius: 999px;
-  border: 1px solid var(--line-strong);
-  background: rgba(255, 255, 255, 0.04);
-  color: var(--text-1);
-  font-size: 13px;
-  font-weight: 600;
-  transition: border-color 0.25s ease, background 0.25s ease, color 0.25s ease;
-}
-
-.view-all-btn:hover {
-  border-color: var(--accent);
-  color: var(--accent);
-  background: var(--accent-dim);
 }
 
 .video-grid {
@@ -2388,8 +2341,8 @@ body.modal-open {
 
   .video-grid,
   .ugc-video-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 14px;
+    grid-template-columns: repeat(1, minmax(0, 1fr));
+    gap: 18px;
   }
 
   .models-grid {

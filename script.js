@@ -872,14 +872,12 @@ function renderSearchResults(query) {
   const grid = document.getElementById('search-results-grid');
   const countEl = document.getElementById('search-results-count');
   const noResultsEl = document.getElementById('search-no-results');
-  const featuredPreviews = document.querySelectorAll('.featured-preview');
 
   if (!resultsContainer || !grid) return;
 
   if (!query || query.trim() === '') {
     resultsContainer.hidden = true;
     if (noResultsEl) noResultsEl.hidden = true;
-    featuredPreviews.forEach(el => el.style.display = '');
     return;
   }
 
@@ -888,9 +886,7 @@ function renderSearchResults(query) {
     (item.title || '').toLowerCase().includes(q)
   );
 
-  featuredPreviews.forEach(el => el.style.display = 'none');
   resultsContainer.hidden = false;
-
   if (countEl) {
     countEl.textContent = results.length + ' result' + (results.length !== 1 ? 's' : '') + ' for "' + query.trim() + '"';
   }
