@@ -578,11 +578,16 @@ function initCustomPlayer(card, video) {
 function togglePlay(card, video) {
   if (video.paused) {
     video.muted = prefersMuted;
+    // Mobile (iOS Safari/Android): on the first tap after lazy-load the
+    // source may still be readyState 0 (metadata not parsed), and play()
+    // rejects immediately. Ensure the source is (re)loaded before starting.
+    if (video.readyState === 0 && video.hasAttribute('src')) video.load();
     video.play().catch(function() {
       // Autoplay with sound may be blocked — retry muted
       video.muted = true;
       prefersMuted = true;
       updateMuteIcon(card, true);
+      if (video.readyState === 0 && video.hasAttribute('src')) video.load();
       video.play().catch(function() {});
     });
   } else {
@@ -627,14 +632,27 @@ function renderVideoCards(urls, containerId, slug, limit) {
 
 // Force-activate reveal cards already in viewport (iOS Safari fix)
 function forceActivateRevealCards(grid) {
+  // MOBILE FEED VISIBILITY FIX (root cause, verified from the built page):
+  // ugc/index.html ships with 0 `.reel-card` nodes: cards are inserted
+  // ASYNC, after the ugc.txt fetch, via renderVideoCards(). Every card is
+  // `.reveal-scale` (styles.css:344 `opacity:0`) and only becomes visible
+  // when `.active` is added. Two paths add it: the IntersectionObserver
+  // `revealObserver` (rootMargin:'0px 0px -100px 0px') and this helper —
+  // both gate on the card rect intersecting the viewport.
+  //
+  // On a PHONE the whole reel grid sits far below the fold, so when the
+  // async render finally runs, this helper (which already executed its two
+  // rAF ticks) and the observer (whose -100px bottom edge never matches an
+  // element thousands of px below) both no-op → every card stays at
+  // opacity:0 → the feed is a permanently-blank area under the search bar.
+  // This reveal is cosmetic only (fade/scale-in). It does NOT load video
+  // sources: the separate lazyVideoObserver (data-video-src) still gates
+  // actual video loading, so lazy loading is fully preserved.
+  // The IntersectionObserver keeps working for desktop scroll-in reveals.
   requestAnimationFrame(() => {
     requestAnimationFrame(() => {
-      const vh = window.innerHeight || document.documentElement.clientHeight;
       grid.querySelectorAll('.reveal-scale:not(.active), .reveal:not(.active), .reveal-fade:not(.active)').forEach(el => {
-        const rect = el.getBoundingClientRect();
-        if (rect.top < vh && rect.bottom > 0) {
-          el.classList.add('active');
-        }
+        el.classList.add('active');
       });
     });
   });
